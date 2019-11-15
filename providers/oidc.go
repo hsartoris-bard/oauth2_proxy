@@ -113,6 +113,7 @@ func (p *OIDCProvider) createSessionState(ctx context.Context, token *oauth2.Tok
 	var claims struct {
 		Subject  string `json:"sub"`
 		Email    string `json:"email"`
+		PrefUID  string `json:"preferred_username"`
 		Verified *bool  `json:"email_verified"`
 	}
 	if err := idToken.Claims(&claims); err != nil {
@@ -157,7 +158,7 @@ func (p *OIDCProvider) createSessionState(ctx context.Context, token *oauth2.Tok
 		CreatedAt:    time.Now(),
 		ExpiresOn:    idToken.Expiry,
 		Email:        claims.Email,
-		User:         claims.Subject,
+		User:         claims.PrefUID,
 	}, nil
 }
 
